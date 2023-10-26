@@ -38,23 +38,29 @@ function App() {
 
     gameBoard[row][col] = player;
   }
-  let winner;
-  for (const combination of WINNING_COMBINATIONS) {
-    const firstSquareSymbol =
-      gameBoard[combination[0].row][combination[0].column];
-    const secondSquareSymbol =
-      gameBoard[combination[1].row][combination[1].column];
-    const thirdSquareSymbol =
-      gameBoard[combination[2].row][combination[2].column];
+  function deriveWinner(gameBoard, player) {
+    let winner;
+    for (const combination of WINNING_COMBINATIONS) {
+      const firstSquareSymbol =
+        gameBoard[combination[0].row][combination[0].column];
+      const secondSquareSymbol =
+        gameBoard[combination[1].row][combination[1].column];
+      const thirdSquareSymbol =
+        gameBoard[combination[2].row][combination[2].column];
 
-    if (
-      firstSquareSymbol &&
-      firstSquareSymbol === secondSquareSymbol &&
-      firstSquareSymbol === thirdSquareSymbol
-    ) {
-      winner = player[firstSquareSymbol];
+      if (
+        firstSquareSymbol &&
+        firstSquareSymbol === secondSquareSymbol &&
+        firstSquareSymbol === thirdSquareSymbol
+      ) {
+        winner = player[firstSquareSymbol];
+      }
     }
+    return winner;
   }
+
+  const winner = deriveWinner(gameBoard, player);
+
   const hasDraw = gameTurns.length === 9 && !winner;
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer((currentPlayer)=> currentPlayer === 'X' ? 'O' : 'X');
@@ -89,13 +95,13 @@ function App() {
         <ol id="players" className="highlight-player">
           <Player
             initialName="Player 1"
-            symbol='X'
+            symbol="X"
             isActive={activePlayer === "X"}
             onChangeName={handlePlayerNameChange}
           />
           <Player
             initialName="Player 2"
-            symbol='O'
+            symbol="O"
             isActive={activePlayer === "O"}
             onChangeName={handlePlayerNameChange}
           />
